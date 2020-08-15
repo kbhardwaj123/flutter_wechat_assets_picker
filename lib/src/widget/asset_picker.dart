@@ -763,17 +763,13 @@ class AssetPicker extends StatelessWidget {
         return Positioned.fill(
           child: GestureDetector(
             onTap: () async {
-              final List<AssetEntity> result =
-                  await AssetPickerViewer.pushToViewer(
-                context,
-                currentIndex: index,
-                assets: provider.currentAssets,
-                themeData: theme,
-                specialPickerType:
-                    asset.type == AssetType.video ? specialPickerType : null,
-              );
-              if (result != null) {
-                Navigator.of(context).pop(result);
+              if (selected) {
+                provider.unSelectAsset(asset);
+              } else {
+                if (isSingleAssetMode) {
+                  provider.selectedAssets.clear();
+                }
+                provider.selectAsset(asset);
               }
             },
             child: AnimatedContainer(
